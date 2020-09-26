@@ -32,10 +32,11 @@ pkgdesc="Minecraft Fabric server unit files, script and jar"
 arch=("any")
 url="https://fabricmc.net"
 license=("Apache")
-depends=("java-runtime-headless=8" "screen" "sudo" "bash" "awk" "sed")
+#depends=("java-runtime-headless=8" "screen" "sudo" "bash" "awk" "sed")
+depends=("java-1_8_0-openjdk" "screen" "sudo" "bash" "awk" "sed")
 optdepends=("tar: needed in order to create world backups"
 	"netcat: required in order to suspend an idle server")
-provides=("fabric-server=${pkgver}")
+provides=("fabric-server")
 backup=("etc/conf.d/${_fabric_name}")
 install="fabric-server.install"
 source=("fabricd-backup.service"

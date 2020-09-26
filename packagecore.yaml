@@ -1,0 +1,66 @@
+name: fabric-server
+maintainer: Brendan McCallum <foldmorepaper@gmail.com>
+license: Apache
+summary: Minecraft Fabric server unit files, script and jar
+homepage: https://fabricmc.net/
+commands:
+  compile:
+    - wget -O fabric-installer-0.6.1.51.jar https://maven.fabricmc.net/net/fabricmc/fabric-installer/0.6.1.51/fabric-installer-0.6.1.51.jar
+    - java -Duser.home="$(pwd)" -jar "fabric-installer-0.6.1.51.jar" server -downloadMinecraft
+  install:
+    - install -Dm644 "fabricd-backup.service" "/usr/lib/systemd/system/fabricd-backup.service"
+    - install -Dm644 "fabricd-backup.timer" "/usr/lib/systemd/system/fabricd-backup.timer"
+    - install -Dm644 "fabricd.service" "/usr/lib/systemd/system/fabricd.service"
+    - install -Dm644 "fabricd.conf" "/etc/conf.d/fabric"
+    - install -Dm755 "fabricd.sh" "/usr/bin/fabricd"
+    - install -Dm644 "fabric-server-launch.jar" "/srv/fabric/fabric-server-launch.jar"
+    - install -Dm644 "server.jar" "/srv/fabric/server.jar"
+    - mkdir -p "/var/log/"
+    - install -dm2755 "/srv/fabric/logs"
+    - ln -s "/srv/fabric/logs" "/var/log/${_fabric_name}"
+    - chmod g+ws "/srv/fabric"
+    - if ! getent group "fabric" &>/dev/null; then groupadd -r "fabric" 1>/dev/null; fi
+    - if ! getent passwd "fabric" &>/dev/null; then useradd -r -g "fabric" -d "/srv/fabric" "fabric" 1>/dev/null; fi
+    - chown -R "fabric:fabric" "/srv/fabric"
+  testinstall:
+    - ls /srv/fabric
+packages:
+  archlinux:
+    buildeps:
+      - java-runtime-headless
+      - wget
+    deps:
+      - java-runtime-headless
+      - screen
+      - sudo
+      - bash
+      - awk
+      - sed
+      - netcat
+      - tar
+  debian10:
+    buildeps:
+      - default-jre-headless
+      - wget
+    deps:
+      - default-jre-headless
+      - screen
+      - sudo
+      - bash
+      - awk
+      - sed
+      - netcat
+      - tar
+  opensuse.tumbleweed:
+    buildeps:
+      - java-1_8_0-openjdk-headless
+      - wget
+    deps:
+      - java-1_8_0-openjdk-headless
+      - screen
+      - sudo
+      - bash
+      - awk
+      - sed
+      - netcat
+      - tar
