@@ -1,4 +1,3 @@
-sudo: required
 services:
   - docker
 language: generic
@@ -9,11 +8,10 @@ before_deploy:
   - packagecore -o dist "${TRAVIS_TAG#v}"
 deploy:
   provider: releases
-  api_key:
+  token:
     secure: 
   file_glob: true
   file:
     - dist/*
-  skip_cleanup: true
   on:
     tags: true
